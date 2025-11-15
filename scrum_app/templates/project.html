@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{ project.name }}</h2>
+<p>{{ project.description }}</p>
+
+<hr>
+
+<h3>Sprints</h3>
+<ul>
+    {% for sprint in sprints %}
+    <li>
+    <strong>{{ sprint.name }}</strong>
+    ({{ sprint.start_date }} → {{ sprint.end_date }})
+
+    <a href="{{ url_for('main.sprint_details', sprint_id=sprint.id) }}"
+       class="btn btn-info btn-sm">
+        Ver detalhes
+    </a>
+
+    <a href="{{ url_for('main.edit_sprint', sprint_id=sprint.id) }}"
+       class="btn btn-warning btn-sm">
+        Editar
+    </a>
+
+    <form action="{{ url_for('main.delete_sprint', sprint_id=sprint.id) }}"
+          method="POST"
+          style="display:inline-block;"
+          onsubmit="return confirm('Tem certeza que deseja excluir esta Sprint?');">
+        <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+    </form>
+</li>
+
+    {% endfor %}
+</ul>
+
+<a href="{{ url_for('main.new_sprint', project_id=project.id) }}" class="btn btn-primary">Nova Sprint</a>
+
+
+<h3>User Stories</h3>
+<a href="{{ url_for('main.new_userstory', project_id=project.id) }}" class="btn btn-primary btn-sm">+ Nova User Story</a>
+
+<ul class="list-group mt-3">
+  {% for us in user_stories %}
+  
+    <li class="list-group-item">
+      <strong>{{ us.title }}</strong>
+      <div>{{ us.description }}</div>
+      <span class="badge bg-secondary">{{ us.status }}</span>
+       <a href="{{ url_for('main.edit_userstory', project_id=project.id, us_id=us.id) }}" class="btn btn-warning btn-sm">Editar</a>
+
+<form action="{{ url_for('main.delete_userstory', project_id=project.id, us_id=us.id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Excluir esta User Story?');">
+  <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+</form>
+    </li>
+   
+
+    
+    
+  {% else %}
+  
+    <li class="list-group-item">Nenhuma user story ainda.</li>
+  {% endfor %}
+  
+</ul>
+
+<hr>
+
+<h3>Tasks</h3>
+<a href="{{ url_for('main.new_task', project_id=project.id) }}" class="btn btn-primary btn-sm">+ Nova Task</a>
+
+<ul class="list-group mt-3">
+  {% for task in tasks %}
+    <li class="list-group-item">
+      <strong>{{ task.title }}</strong>
+      <div>{{ task.description }}</div>
+      <span class="badge bg-info">{{ task.status }}</span>
+      <a href="{{ url_for('main.edit_task', project_id=project.id, task_id=task.id) }}" class="btn btn-warning btn-sm">Editar</a>
+
+<form action="{{ url_for('main.delete_task', project_id=project.id, task_id=task.id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Excluir esta Task?');">
+  <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+</form>
+
+      {% if task.sprint %}
+        <span class="badge bg-success">Sprint: {{ task.sprint.name }}</span>
+      {% endif %}
+      {% if task.assigned_user %}
+        <span class="badge bg-dark">Assigned: {{ task.assigned_user.username }}</span>
+      {% endif %}
+    </li>
+  {% else %}
+    <li class="list-group-item">Nenhuma task ainda.</li>
+  {% endfor %}
+</ul>
+
+<h3>Kanban</h3>
+<a href="{{ url_for('main.kanban_board', project_id=project.id) }}"
+   class="btn btn-secondary btn-sm">
+    Ver Kanban Board
+</a>
+
+<h3>Membros</h3>
+<a href="{{ url_for('main.project_members', project_id=project.id) }}" class="btn btn-secondary btn-sm">
+    Gerenciar Membros
+</a>
+
+
+
+{% endblock %}

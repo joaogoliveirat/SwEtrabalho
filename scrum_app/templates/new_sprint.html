@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Nova Sprint — {{ project.name }}</h2>
+
+<form method="POST">
+  <label>Nome:</label>
+  <input type="text" name="name" class="form-control" required>
+
+  <label>Início:</label>
+  <input type="date" name="start_date" class="form-control">
+
+  <label>Fim:</label>
+  <input type="date" name="end_date" class="form-control">
+
+  <label>Objetivo:</label>
+  <textarea name="goal" class="form-control"></textarea>
+
+  <button class="btn btn-success mt-3">Criar</button>
+</form>
+
+{% endblock %}

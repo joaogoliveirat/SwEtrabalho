@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Kanban {{project.name}}</h2>
+
+<div class="row mt-4">
+    <div class="col-md-4">
+        <h4>To Do</h4>
+        <div class="border p-2">
+            {% for task in tasks_todo %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <strong>{{ task.title }}</strong>
+                        <p class="mb-1">{{ task.description }}</p>
+
+                        <form method="POST" action="{{ url_for('main.update_task_status', task_id=task.id, new_status='Doing') }}">
+                            <button class="btn btn-sm btn-primary">Mover para Doing</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <p>Nenhuma task.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <h4>Doing</h4>
+        <div class="border p-2">
+            {% for task in tasks_doing %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <strong>{{ task.title }}</strong>
+                        <p class="mb-1">{{ task.description }}</p>
+
+                        <div class="d-flex gap-2">
+                            <form method="POST" action="{{ url_for('main.update_task_status', task_id=task.id, new_status='To Do') }}">
+                                <button class="btn btn-sm btn-secondary">Voltar</button>
+                            </form>
+
+                            <form method="POST" action="{{ url_for('main.update_task_status', task_id=task.id, new_status='Done') }}">
+                                <button class="btn btn-sm btn-success">Concluir</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>Nenhuma task.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <h4>Done</h4>
+        <div class="border p-2">
+            {% for task in tasks_done %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <strong>{{ task.title }}</strong>
+                        <p class="mb-1">{{ task.description }}</p>
+
+                        <form method="POST" action="{{ url_for('main.update_task_status', task_id=task.id, new_status='Doing') }}">
+                            <button class="btn btn-sm btn-warning">Reabrir</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <p>Nenhuma task.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

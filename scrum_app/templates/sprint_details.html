@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Sprint: {{ sprint.name }}</h2>
+    <p><strong>Período:</strong> {{ sprint.start_date }} → {{ sprint.end_date }}</p>
+    <p><strong>Objetivo:</strong> {{ sprint.goal }}</p>
+
+    <hr>
+
+    <h3>User Stories desta Sprint</h3>
+
+    {% if sprint.user_stories %}
+        <ul class="list-group mb-4">
+            {% for us in sprint.user_stories %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        <strong>{{ us.title }}</strong><br>
+                        <small>{{ us.description }}</small>
+                    </span>
+
+                    <form action="{{ url_for('main.remove_us_from_sprint', sprint_id=sprint.id, us_id=us.id) }}" method="POST">
+                        <button class="btn btn-sm btn-danger">Remover da Sprint</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">Nenhuma User Story atribuída a esta sprint ainda.</p>
+    {% endif %}
+
+    <hr>
+    <h3>Adicionar User Story à Sprint</h3>
+{% if available_stories %}
+    <form action="{{ url_for('main.add_us_to_sprint', sprint_id=sprint.id) }}" method="POST" class="mb-4">
+
+        <div class="mb-3">
+            <label class="form-label">Selecione uma User Story:</label>
+            <select name="userstory_id" class="form-select" required>
+                <option value="" disabled selected>Escolha...</option>
+                {% for us in available_stories %}
+                    <option value="{{ us.id }}">{{ us.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button class="btn btn-primary">Adicionar</button>
+    </form>
+{% else %}
+    <p class="text-muted">Todas as User Stories já estão atribuídas a uma Sprint.</p>
+{% endif %}
+
+
+    <hr>
+
+    <a href="{{ url_for('main.view_project', project_id=sprint.project.id) }}" class="btn btn-secondary mt-3">
+        Voltar ao Projeto
+    </a>
+
+</div>
+
+{% endblock %}

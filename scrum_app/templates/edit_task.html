@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Editar Task</h2>
+<form method="POST">
+  <label>Título</label>
+  <input name="title" value="{{ task.title }}" class="form-control" required>
+  <label>Descrição</label>
+  <textarea name="description" class="form-control">{{ task.description }}</textarea>
+
+  <label>Sprint (opcional)</label>
+  <select name="sprint_id" class="form-control">
+    <option value="">-- Nenhuma --</option>
+    {% for s in sprints %}
+      <option value="{{ s.id }}" {{ 'selected' if task.sprint_id==s.id else '' }}>{{ s.name }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Assign to</label>
+  <select name="assigned_to" class="form-control">
+    <option value="">-- Ninguém --</option>
+    {% for u in users %}
+      <option value="{{ u.id }}" {{ 'selected' if task.assigned_to==u.id else '' }}>{{ u.username }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Status</label>
+  <select name="status" class="form-control">
+    <option {{ 'selected' if task.status=='To Do' else '' }}>To Do</option>
+    <option {{ 'selected' if task.status=='In Progress' else '' }}>In Progress</option>
+    <option {{ 'selected' if task.status=='Done' else '' }}>Done</option>
+  </select>
+
+  <button class="btn btn-success mt-2">Salvar</button>
+</form>
+{% endblock %}

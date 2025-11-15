@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Editar Sprint</h2>
+
+<form method="POST">
+    <label>Nome:</label>
+    <input type="text" name="name" value="{{ sprint.name }}" required class="form-control">
+
+    <label>Objetivo da Sprint:</label>
+    <textarea name="goal" class="form-control">{{ sprint.goal }}</textarea>
+
+    <label>Data de Início:</label>
+    <input type="date" name="start_date" value="{{ sprint.start_date }}" required class="form-control">
+
+    <label>Data de Fim:</label>
+    <input type="date" name="end_date" value="{{ sprint.end_date }}" required class="form-control">
+
+    <button type="submit" class="btn btn-success mt-3">Salvar Alterações</button>
+</form>
+
+{% endblock %}

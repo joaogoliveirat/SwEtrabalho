@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Membros do Projeto: {{ project.name }}</h2>
+
+<h3>Equipe</h3>
+<table class="table">
+    <tr>
+        <th>Usuário</th>
+        <th>Papel</th>
+        <th>Ações</th>
+    </tr>
+
+    {% for m in project.memberships %}
+    <tr>
+        <td>{{ m.user.username }}</td>
+        <td>{{ m.role }}</td>
+        <td>
+            {% if m.user_id != project.owner_id %}
+            <form method="POST" action="{{ url_for('main.delete_project_member', project_id=project.id, member_id=m.id) }}">
+                <button class="btn btn-danger btn-sm">Remover</button>
+            </form>
+            {% else %}
+            <span class="badge bg-primary">Product Owner</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<hr>
+
+<h3>Adicionar novo membro</h3>
+
+<form method="POST" action="{{ url_for('main.add_project_member', project_id=project.id) }}">
+    <label>Usuário</label>
+    <select name="user_id" class="form-control">
+        {% for u in available_users %}
+            <option value="{{ u.id }}">{{ u.username }}</option>
+        {% endfor %}
+    </select>
+
+    <label class="mt-2">Papel</label>
+    <select name="role" class="form-control">
+        <option value="Developer">Developer</option>
+        <option value="Scrum Master">Scrum Master</option>
+    </select>
+
+    <button class="btn btn-success mt-3">Adicionar</button>
+</form>
+
+{% endblock %}

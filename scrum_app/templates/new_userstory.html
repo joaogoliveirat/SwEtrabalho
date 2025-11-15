@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Nova User Story — {{ project.name }}</h2>
+
+<form method="POST">
+  <label>Título:</label>
+  <input type="text" name="title" class="form-control" required>
+
+  <label>Descrição:</label>
+  <textarea name="description" class="form-control" required></textarea>
+
+  <button class="btn btn-success mt-3">Criar</button>
+</form>
+
+{% endblock %}

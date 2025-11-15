@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Nova Task — {{ project.name }}</h2>
+
+<form method="POST">
+
+  <label>Título:</label>
+  <input type="text" name="title" class="form-control" required>
+
+  <label>Descrição:</label>
+  <textarea name="description" class="form-control"></textarea>
+
+  <label>Sprint (opcional):</label>
+  <select name="sprint_id" class="form-control">
+    <option value="">-- Nenhuma --</option>
+    {% for s in sprints %}
+      <option value="{{ s.id }}">{{ s.name }}</option>
+    {% endfor %}
+  </select>
+
+  <label>Assign to (opcional):</label>
+  <select name="assigned_to" class="form-control">
+    <option value="">-- Ninguém --</option>
+    {% for u in users %}
+      <option value="{{ u.id }}">{{ u.username }}</option>
+    {% endfor %}
+  </select>
+
+  <button class="btn btn-success mt-3">Criar</button>
+</form>
+
+{% endblock %}
